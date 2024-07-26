@@ -1,0 +1,80 @@
+CREATE DATABASE SistemaGestionMantenimientoAutos;
+USE SistemaGestionMantenimientoAutos;
+
+select * from  tareas_mantenimiento
+
+CREATE TABLE usuarios (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(100) NOT NULL,
+    clave VARCHAR(100) NOT NULL,
+    rol VARCHAR(50) NOT NULL,
+    apellidos VARCHAR(100),
+    email VARCHAR(100),
+    telefono VARCHAR(20)
+);
+
+CREATE TABLE autos (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    marca VARCHAR(100) NOT NULL,
+    modelo VARCHAR(100) NOT NULL,
+    anio INT NOT NULL,
+    placa VARCHAR(20) NOT NULL
+);
+CREATE TABLE tipos_mantenimiento (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nombre_tipo VARCHAR(50) NOT NULL
+);
+
+
+CREATE TABLE tareas_mantenimiento (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    auto_id INT NOT NULL,
+    tipo_mantenimiento_id INT NOT NULL,
+    usuario_id INT,
+    descripcion_tarea TEXT,
+    estado VARCHAR(50),
+    FOREIGN KEY (auto_id) REFERENCES autos(id),
+    FOREIGN KEY (tipo_mantenimiento_id) REFERENCES tipos_mantenimiento(id),
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+);
+
+CREATE TABLE historial_mantenimiento (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    tarea_mantenimiento_id INT NOT NULL,
+    usuario_id INT NOT NULL,
+    fecha_realizacion DATE NOT NULL,
+    notas TEXT,
+    FOREIGN KEY (tarea_mantenimiento_id) REFERENCES tareas_mantenimiento(id),
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+);
+
+CREATE TABLE roles_usuario (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nombre_rol VARCHAR(50) NOT NULL
+);
+
+INSERT INTO usuarios (nombre, clave, rol, apellidos, email, telefono) VALUES
+('Juan', 'clave123', 'Admin', 'Pérez', 'juan.perez@example.com', '123456789'),
+('María', 'clave456', 'Usuario', 'Gómez', 'maria.gomez@example.com', '987654321'),
+('Carlos', 'clave789', 'Usuario', 'Sánchez', 'carlos.sanchez@example.com', '456123789'),
+('Ana', 'clave321', 'Admin', 'López', 'ana.lopez@example.com', '789123456'),
+('Pedro', 'clave654', 'Usuario', 'Fernández', 'pedro.fernandez@example.com', '321654987');
+
+INSERT INTO autos (marca, modelo, anio, placa) VALUES
+('Toyota', 'Corolla', 2020, 'ABC-1234'),
+('Honda', 'Civic', 2019, 'DEF-5678'),
+('Ford', 'Focus', 2018, 'GHI-9012'),
+('Chevrolet', 'Cruze', 2021, 'JKL-3456'),
+('Nissan', 'Sentra', 2022, 'MNO-7890');
+
+INSERT INTO tipos_mantenimiento (nombre_tipo) VALUES
+('Cambio de aceite'),
+('Revisión de frenos'),
+('Cambio de neumáticos'),
+('Alineación y balanceo'),
+('Revisión de motor')
+
+
+INSERT INTO tareas_mantenimiento (auto_id, tipo_mantenimiento_id, usuario_id, descripcion_tarea, estado) VALUES
+(2, 1, 1, 'Cambio de aceite completo, incluyendo filtro', 'Pendiente')
+(2, 1, 1, 'Cambio de aceite completo, incluyendo filtro', 'En proceso')
