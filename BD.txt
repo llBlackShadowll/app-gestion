@@ -1,0 +1,52 @@
+CREATE DATABASE SistemaGestionMantenimientoAutos;
+USE SistemaGestionMantenimientoAutos;
+
+CREATE TABLE usuarios (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(100) NOT NULL,
+    clave VARCHAR(100) NOT NULL,
+    rol VARCHAR(50) NOT NULL,
+    apellidos VARCHAR(100),
+    email VARCHAR(100),
+    telefono VARCHAR(20)
+);
+
+CREATE TABLE autos (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    marca VARCHAR(100) NOT NULL,
+    modelo VARCHAR(100) NOT NULL,
+    anio INT NOT NULL,
+    placa VARCHAR(20) NOT NULL
+);
+CREATE TABLE tipos_mantenimiento (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nombre_tipo VARCHAR(50) NOT NULL
+);
+
+
+CREATE TABLE tareas_mantenimiento (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    auto_id INT NOT NULL,
+    tipo_mantenimiento_id INT NOT NULL,
+    usuario_id INT,
+    descripcion_tarea TEXT,
+    estado VARCHAR(50),
+    FOREIGN KEY (auto_id) REFERENCES autos(id),
+    FOREIGN KEY (tipo_mantenimiento_id) REFERENCES tipos_mantenimiento(id),
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+);
+
+CREATE TABLE historial_mantenimiento (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    tarea_mantenimiento_id INT NOT NULL,
+    usuario_id INT NOT NULL,
+    fecha_realizacion DATE NOT NULL,
+    notas TEXT,
+    FOREIGN KEY (tarea_mantenimiento_id) REFERENCES tareas_mantenimiento(id),
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+);
+
+CREATE TABLE roles_usuario (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nombre_rol VARCHAR(50) NOT NULL
+);
